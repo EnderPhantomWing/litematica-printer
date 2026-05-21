@@ -18,9 +18,9 @@ val jsonSlurper = JsonSlurper()
 group = modMavenGroup
 version = fullProjectVersion
 
-//base {
-//    archivesName.set("$modArchivesBaseName-versionpack")
-//}
+base {
+    archivesName.set("")
+}
 
 val fabricSubprojects = rootProject.subprojects.filter { it.name != "fabricWrapper" }
 
