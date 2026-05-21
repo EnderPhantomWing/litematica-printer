@@ -60,10 +60,10 @@ jobs:
         uses: actions/upload-artifact@v7
         with:
           name: litematica-printer-${{ env.COMMIT_HASH }}
-          path: fabricWrapper/build/libs/
+          path: fabricWrapper/build/libs/*.jar
 
       - name: Capture build artifacts single version
         uses: actions/upload-artifact@v7
         with:
           name: litematica-printer-single-${{ env.COMMIT_HASH }}
-          path: fabricWrapper/build/tmp/submods/META-INF/jars/
+          path: fabricWrapper/build/tmp/submods/META-INF/jars/*.jar
