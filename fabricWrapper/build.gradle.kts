@@ -27,40 +27,17 @@ fabricSubprojects.forEach {
 }
 
 tasks {
-    val collectSubModules by registering {
-        val destDir = layout.buildDirectory.dir("tmp/submods/META-INF/jars")
-
-        outputs.upToDateWhen { false }
-
-        dependsOn(fabricSubprojects.map { it.tasks.named("build") })
-
-        doLast {
-            val destDirFile = destDir.get().asFile
-            destDirFile.deleteRecursively()
-            destDirFile.mkdirs()
-
-            fabricSubprojects.forEach { sub ->
-                val subDir = sub.projectDir.resolve("build/libs")
-                if (subDir.exists() && subDir.isDirectory) {
-                    val jars = subDir.listFiles()?.filter { it.extension == "jar" } ?: return@forEach
-                    val latestJar = jars.maxByOrNull { it.lastModified() } ?: return@forEach
-                    latestJar.copyTo(destDirFile.resolve(latestJar.name), overwrite = true)
-                    println("Copied: ${latestJar.name}")
-                }
-            }
-        }
-    }
-
     named<Jar>("jar") {
-        dependsOn(collectSubModules)
-        dependsOn("processResources")
+        outputs.upToDateWhen { false }
 
         from(rootProject.file("LICENSE"))
         from(layout.buildDirectory.dir("tmp/submods"))
     }
 
     named<ProcessResources>("processResources") {
-        dependsOn(collectSubModules)
+        outputs.upToDateWhen { false }
+
+        dependsOn(fabricSubprojects.map { it.tasks.named("buildAndCollect") })
 
         doLast {
             val jarsDir = layout.buildDirectory.dir("tmp/submods/META-INF/jars").get().asFile

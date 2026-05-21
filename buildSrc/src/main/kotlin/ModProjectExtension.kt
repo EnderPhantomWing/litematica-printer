@@ -69,7 +69,7 @@ private fun getFullProjectVersion(modArchivesBaseName: String, modVersion: Strin
                 .format(Date())
                 .toString()
             val buildNumber = System.getenv("GITHUB_RUN_NUMBER")
-            val version = "$modArchivesBaseName-v$modVersion-$getShortHash+$time"
+            val version = "v$modVersion-$getShortHash+$time"
             if (buildNumber != null) {
                 "$version+build.$buildNumber"
             } else {

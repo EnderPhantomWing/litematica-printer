@@ -56,6 +56,24 @@ jobs:
       - name: Build
         run: ./gradlew :fabricWrapper:build
 
+      - name: Collect mod jars
+        run: |
+          shopt -s extglob
+          mkdir mod-jars
+          for jar in fabricWrapper/build/libs/!(*-@(dev|sources|shadow)).jar; do
+              cp -p "$jar" mod-jars/
+          done
+          for jar in fabricWrapper/build/tmp/submods/META-INF/jars/!(*-@(dev|sources|shadow)).jar; do
+              cp -p "$jar" mod-jars/
+          done
+          ls -l mod-jars
+
+      - name: Upload mod jars
+        uses: actions/upload-artifact@v7
+        with:
+          name: test-${{ env.COMMIT_HASH }}
+          path: mod-jars/*.jar
+
       - name: Capture build artifacts
         uses: actions/upload-artifact@v7
         with:
