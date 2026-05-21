@@ -59,6 +59,7 @@ val Project.fullProjectVersion: String get() = getFullProjectVersion(modArchives
 private fun getFullProjectVersion(modArchivesBaseName: String, modVersion: String): String {
     val isRelease = System.getenv("IS_THIS_RELEASE")?.toBoolean() == true
     val isCi = System.getenv("CI") == "true" || System.getenv("GITHUB_ACTIONS") == "true"
+    val commitHash = System.getenv("COMMIT_HASH")
 
     return when {
         isRelease -> modVersion
@@ -68,7 +69,7 @@ private fun getFullProjectVersion(modArchivesBaseName: String, modVersion: Strin
                 .format(Date())
                 .toString()
             val buildNumber = System.getenv("GITHUB_RUN_NUMBER")
-            val version = "v$modVersion+$time"
+            val version = "v$modVersion-$commitHash+$time"
             if (buildNumber != null) {
                 "$modArchivesBaseName-$version+build.$buildNumber"
             } else {
