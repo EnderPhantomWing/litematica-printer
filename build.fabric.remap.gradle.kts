@@ -9,7 +9,7 @@ plugins {
     id("com.replaymod.preprocess")
 }
 
-version = fullProjectVersion
+version = modArchivesBaseName + fullProjectVersion
 group = modMavenGroup
 
 repositories {
@@ -141,7 +141,6 @@ loom {
         }
     }
 }
-
 
 tasks {
     register<Copy>("buildAndCollect") {

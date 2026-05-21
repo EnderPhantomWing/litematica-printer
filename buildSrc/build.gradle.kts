@@ -8,9 +8,9 @@ repositories {
     gradlePluginPortal()
 }
 
-kotlin {
-    jvmToolchain(21)
-}
+//kotlin {
+//    jvmToolchain(21)
+//}
 
 gradlePlugin {
     plugins {
