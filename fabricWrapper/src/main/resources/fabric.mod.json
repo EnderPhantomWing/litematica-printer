@@ -8,27 +8,23 @@
   "authors": [
     {
       "name": "aleksilassila",
-      "contact": {
-        "homepage": ""
-      }
+      "contact": { "homepage": "" }
     },
     {
       "name": "zhaixianyu",
-      "contact": {
-        "homepage": "https://github.com/zhaixianyu"
-      }
+      "contact": { "homepage": "https://github.com/zhaixianyu" }
     },
     {
       "name": "BlinkWhite",
-      "contact": {
-        "homepage": "https://github.com/BiliXWhite"
-      }
+      "contact": { "homepage": "https://github.com/BiliXWhite" }
     },
     {
       "name": "bunnyi116",
-      "contact": {
-        "homepage": "https://github.com/bunnyi116"
-      }
+      "contact": { "homepage": "https://github.com/bunnyi116" }
+    },
+    {
+      "name": "EnderPhantomWing",
+      "contact": { "homepage": "https://github.com/EnderPhantomWing" }
     }
   ],
   "contact": {
