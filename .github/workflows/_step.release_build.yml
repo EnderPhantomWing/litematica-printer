@@ -1,0 +1,87 @@
+name: _step.release_build
+on:
+  workflow_call:
+    inputs:
+      release:
+        type: boolean
+        required: false
+        default: false
+      target_subproject:
+        description: see release.yml, leave it empty to build all
+        type: string
+        required: false
+        default: ''
+  workflow_dispatch: 
+
+env:
+  IS_THIS_RELEASE: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    if: ${{ !contains(github.event.head_commit.message, 'SKIP') }}
+    env:
+      GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      GH_USERNAME: ${{ secrets.GH_USERNAME }}
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v6
+
+      - name: Validate gradle wrapper
+        uses: gradle/actions/wrapper-validation@v6
+
+      - name: Setup Java
+        uses: actions/setup-java@v5
+        with:
+          distribution: 'temurin'
+          java-version: '25'
+
+      - name: Cache Gradle dependencies
+        id: gradle-cache
+        uses: actions/cache@v5
+        with:
+          path: |
+            ~/.gradle/caches
+            ~/.gradle/wrapper
+            ./.gradle
+          key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
+          restore-keys: |
+            ${{ runner.os }}-gradle-common
+            ${{ runner.os }}-gradle-
+
+      - name: Make gradle wrapper executable
+        run: chmod +x ./gradlew
+
+      - name: Get latest short hash
+        run: echo "COMMIT_HASH=$(git rev-parse --short HEAD)" >> $GITHUB_ENV
+
+      - name: Download dependencies
+        if: |
+          steps.gradle-cache.outputs.cache-hit != 'true' ||
+          contains(github.event.head_commit.message, 'DEPS')
+        run: ./gradlew dependencies --stacktrace
+
+      - name: Build
+        run: ./gradlew :fabricWrapper:build --stacktrace
+
+      - name: Delete versionpack-sources.jar
+        run: |
+          find fabricWrapper/build/libs/ -name "*-sources.jar" -exec rm {} \;
+
+      - name: Upload versionpack jar
+        uses: actions/upload-artifact@v7
+        with:
+          name: litematica-printer-${{ env.COMMIT_HASH }}
+          path: fabricWrapper/build/libs/
+
+      - name: Capture build artifacts single version
+        uses: actions/upload-artifact@v7
+        with:
+          name: litematica-printer-single-${{ env.COMMIT_HASH }}
+          path: fabricWrapper/build/tmp/submods/META-INF/jars/
+
+      - name: Release
+        uses: softprops/action-gh-release@v2
+        with:
+          files: fabricWrapper/build/libs/*
+          token: ${{ secrets.GITHUB_TOKEN }}
