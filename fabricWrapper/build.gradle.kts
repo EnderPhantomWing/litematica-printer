@@ -108,7 +108,7 @@ tasks {
                 println("✅ fabric.mod.json has updated, include ${jars.size} subversion JAR")
                 jars.forEach { println("  - ${it["file"]}") }
             } else {
-                println("⚠ 未找到 fabric.mod.json: ${jsonFile.absolutePath}")
+                println("⚠ Not found fabric.mod.json: ${jsonFile.absolutePath}")
             }
         }
     }
