@@ -9,7 +9,7 @@ plugins {
     id("com.replaymod.preprocess")
 }
 
-version = modArchivesBaseName + fullProjectVersion
+version = fullProjectVersion
 group = modMavenGroup
 
 repositories {

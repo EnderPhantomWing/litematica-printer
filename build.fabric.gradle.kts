@@ -13,51 +13,50 @@ version = fullProjectVersion
 group = modMavenGroup
 
 repositories {
-    maven("https://maven.fabricmc.net") { name = "FabricMC" }
-    maven("https://maven.fallenbreath.me/releases") { name = "FallenBreath" }
-    maven("https://api.modrinth.com/maven") { name = "Modrinth" }
-    maven("https://www.cursemaven.com") { name = "CurseMaven" }
-    maven("https://maven.terraformersmc.com/releases") { name = "TerraformersMC" } // ModMenu 源
-    maven("https://maven.nucleoid.xyz") { name = "Nucleoid" }  // ModMenu依赖 Text Placeholder API
-    maven("https://masa.dy.fi/maven") { name = "Masa" }
-    maven("https://masa.dy.fi/maven/sakura-ryoko") { name = "SakuraRyoko" }
-    maven("https://maven.shedaniel.me") { name = "Shedaniel" }  // Cloth API/Config 官方源
-    maven("https://maven.isxander.dev/releases") { name = "XanderReleases" }
-    maven("https://maven.jackf.red/releases") { name = "Jackfred" }   // JackFredLib 依赖
-    maven("https://maven.blamejared.com") { name = "BlameJared" }   // Searchables 配置库
-    maven("https://maven.kyrptonaught.dev") { name = "Kyrptonaught" }   // KyrptConfig 依赖
-    maven("https://staging.alexiil.uk/maven/") { name = "CottonMC" }   // LibGui 依赖
-    maven("https://jitpack.io") { name = "Jitpack" }
-    maven("https://mvnrepository.com/artifact/com.belerweb/pinyin4j") { // 拼音库
-        name = "Pinyin4j"
-        content {
-            includeGroupAndSubgroups("com.belerweb")
+    fun strictMaven(url: String, vararg groups: String) = exclusiveContent {
+        forRepository { maven(url) }
+        filter {
+            groups.forEach {
+                includeGroupAndSubgroups(it)
+                includeGroupAndSubgroups("$it.*")
+            }
         }
     }
+    fun githubPKGMaven(repo: String, vararg groups: String) = exclusiveContent {
+        forRepository {
+            maven {
+                url = uri("https://maven.pkg.github.com/$repo")
+                credentials {
+                    username = System.getenv("GH_USERNAME") ?: "github-actions[bot]"
+                    password = System.getenv("GH_TOKEN") ?: System.getenv("GITHUB_TOKEN")
+                }
+            }
+        }
+        filter {
+            groups.forEach {
+                includeGroupAndSubgroups(it)
+                includeGroupAndSubgroups("$it.*")
+            }
+        }
+    }
+    strictMaven("https://mvnrepository.com/artifact/com.belerweb/pinyin4j")
 
-    // pkg.github.com. needs authentication(system environment)
-    // GH_USERNAME 和 GH_TOKEN 需要在系统环境变量中设置(windows) Github可设置自己用户名 也可以使用默认GITHUB_TOKEN( github-actions[bot] )
-    maven { // JackFredLib ponuing
-        url = uri("https://maven.pkg.github.com/ponuing/JackFredLib")
-        credentials {
-            username = System.getenv("GH_USERNAME")?: "github-actions[bot]"
-            password = System.getenv("GH_TOKEN")?: System.getenv("GITHUB_TOKEN")
-        }
-    }
-    maven { // ChestTracker ponuing
-        url = uri("https://maven.pkg.github.com/ponuing/ChestTracker")
-        credentials {
-            username = System.getenv("GH_USERNAME")?: "github-actions[bot]"
-            password = System.getenv("GH_TOKEN")?: System.getenv("GITHUB_TOKEN")
-        }
-    }
-    maven { // WhereIsIt ponuing
-        url = uri("https://maven.pkg.github.com/ponuing/WhereIsIt")
-        credentials {
-            username = System.getenv("GH_USERNAME")?: "github-actions[bot]"
-            password = System.getenv("GH_TOKEN")?: System.getenv("GITHUB_TOKEN")
-        }
-    }
+    strictMaven("https://www.cursemaven.com", "curse.maven")
+    strictMaven("https://api.modrinth.com/maven", "maven.modrinth")
+
+    strictMaven("https://maven.fabricmc.net")
+    strictMaven("https://maven.nucleoid.xyz", "eu.pb4")
+    strictMaven("https://maven.terraformersmc.com/releases", "com.terraformersmc")
+    strictMaven("https://maven.fallenbreath.me/releases")
+    strictMaven("https://masa.dy.fi/maven/sakura-ryoko")
+    strictMaven("https://maven.blamejared.com")
+    strictMaven("https://maven.isxander.dev/releases")
+
+    strictMaven("https://jitpack.io")
+
+    githubPKGMaven("ponuing/JackFredLib")
+    githubPKGMaven("ponuing/ChestTracker")
+    githubPKGMaven("ponuing/WhereIsIt")
 }
 
 // https://github.com/FabricMC/fabric-loader/issues/783

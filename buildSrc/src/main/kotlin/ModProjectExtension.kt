@@ -81,7 +81,7 @@ private fun getFullProjectVersion(modArchivesBaseName: String, modVersion: Strin
                 .apply { timeZone = TimeZone.getTimeZone("GMT+08:00") }
                 .format(Date())
                 .toString()
-            "$modVersion+$time"
+            "$modArchivesBaseName-v$modVersion+$time"
         }
     }
 }
