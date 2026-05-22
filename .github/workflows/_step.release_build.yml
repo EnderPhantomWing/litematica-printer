@@ -71,14 +71,6 @@ jobs:
         run: |
           find fabricWrapper/build/libs/ -name "*-sources.jar" -exec rm {} \;
 
-      - name: Capture build-artifacts to summary
-        uses: actions/upload-artifact@v7
-        with:
-          name: build-artifacts
-          path: |
-            fabricWrapper/build/libs/*.jar
-            fabricWrapper/build/tmp/submods/META-INF/jars/*.jar
-
       - name: Upload multi version jar
         uses: actions/upload-artifact@v7
         with:
@@ -113,10 +105,13 @@ jobs:
         with:
           python-version: 3.12
 
+      - name: Get latest short hash
+        run: echo "COMMIT_HASH=$(git rev-parse --short HEAD)" >> $GITHUB_ENV
+
       - name: Download build artifacts
         uses: actions/download-artifact@v8
         with:
-          name: build-artifacts
+          name: litematica-printer-single-${{ env.COMMIT_HASH }}
           path: build-artifacts
 
       - name: Make build summary
