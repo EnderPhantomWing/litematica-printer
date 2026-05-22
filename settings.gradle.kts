@@ -1,3 +1,5 @@
+import groovy.json.JsonSlurper
+
 pluginManagement {
     repositories {
         mavenLocal()
@@ -16,10 +18,15 @@ pluginManagement {
 }
 
 
-val versions = listOf(
-    "1.21.1", "1.21.3", "1.21.4", "1.21.5", "1.21.8", "1.21.10", "1.21.11",
-    "26.1.2"
-)
+//val versions = listOf(
+//    "1.21.1", "1.21.3", "1.21.4", "1.21.5", "1.21.8", "1.21.10", "1.21.11",
+//    "26.1.2"
+//)
+
+val jsonFile = file("settings.json")
+val jsonText = jsonFile.readText()
+val settings = JsonSlurper().parseText(jsonText) as Map<String, Any>
+val versions = settings["versions"] as List<String>
 
 for (version in versions) {
     include(":$version")

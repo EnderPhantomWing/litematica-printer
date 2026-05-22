@@ -62,7 +62,7 @@ private fun getFullProjectVersion(modArchivesBaseName: String, modVersion: Strin
     val commitHash = System.getenv("COMMIT_HASH")
 
     return when {
-        isRelease -> modVersion
+        isRelease -> "$modArchivesBaseName-$version-$commitHash"
         isCi -> {
             val time = SimpleDateFormat("yyMMdd")
                 .apply { timeZone = TimeZone.getTimeZone("GMT+08:00") }
