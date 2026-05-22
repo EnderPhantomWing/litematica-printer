@@ -56,6 +56,7 @@ jobs:
       - name: Build
         run: ./gradlew :fabricWrapper:build
 
+
       - name: Capture build artifacts
         uses: actions/upload-artifact@v7
         with:
@@ -87,9 +88,7 @@ jobs:
       - name: Download build artifacts
         uses: actions/download-artifact@v8
         with:
-          name: |
-            litematica-printer-multi-${{ env.COMMIT_HASH }}
-            litematica-printer-single-${{ env.COMMIT_HASH }}
+          name: build-artifacts
           path: build-artifacts
 
       - name: Make build summary
