@@ -50,10 +50,11 @@ def main():
 				continue
 			game_versions = read_prop('versions/{}/gradle.properties'.format(subproject), 'game_versions')
 			game_versions = game_versions.strip().replace('\r', '').replace('\n', ', ')
-			file_paths = glob.glob('build-artifacts/*.jar'.format(subproject))
+			file_paths = glob.glob('build-artifacts/*.jar')
 			file_paths = list(filter(lambda fp: not fp.endswith('-sources.jar') and not fp.endswith('-dev.jar') and not fp.endswith('-shadow.jar'), file_paths))
 			if len(file_paths) == 0:
 				file_name = '*not found*'
+# 				file_size = '*N/A*'
 				sha256 = '*N/A*'
 			else:
 				file_name = '`{}`'.format(os.path.basename(file_paths[0]))
