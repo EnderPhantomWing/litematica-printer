@@ -73,7 +73,7 @@ private fun getFullProjectVersion(modArchivesBaseName: String, modVersion: Strin
             if (buildNumber != null) {
                 "$modArchivesBaseName-$version-$commitHash+$time+build.$buildNumber"
             } else {
-                "$modArchivesBaseName-$version+$time+build.local"
+                "$modArchivesBaseName-$version+$time"
             }
         }
         else -> {
@@ -81,7 +81,7 @@ private fun getFullProjectVersion(modArchivesBaseName: String, modVersion: Strin
                 .apply { timeZone = TimeZone.getTimeZone("GMT+08:00") }
                 .format(Date())
                 .toString()
-            "$modArchivesBaseName-v$modVersion+$time"
+            "$modArchivesBaseName-v$modVersion+$time+build.local"
         }
     }
 }
