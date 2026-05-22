@@ -61,23 +61,12 @@ def main():
 			game_versions = game_versions.strip().replace('\r', '').replace('\n', ', ')
 			file_paths = glob.glob('build-artifacts/*.jar')
 			file_paths = list(filter(lambda fp: not fp.endswith('-sources.jar') and not fp.endswith('-dev.jar') and not fp.endswith('-shadow.jar'), file_paths))
-# 			if len(file_paths) == 0:
-# 				file_name = '*not found*'
-# 				file_size = '*N/A*'
-# 				sha256 = '*N/A*'
-# 			else:
-# 				file_name = '`{}`'.format(os.path.basename(file_paths[0]))
-# 				file_size = '{} B'.format(os.path.getsize(file_paths[0]))
-# 				sha256 = '`{}`'.format(get_sha256_hash(file_paths[0]))
-# 				if len(file_paths) > 1:
-# 					warnings.append('Found too many build files in subproject {}: {}'.format(subproject, ', '.join(file_paths)))
             if len(file_paths) == 0:
                 file_name = '*not found*'
                 file_size = '*N/A*'
                 sha256 = '*N/A*'
             else:
                 file_name = f'`{os.path.basename(file_paths[0])}`'
-#                 file_size = f'{os.path.getsize(file_paths[0])} B'
                 file_size = human_readable_size(os.path.getsize(file_paths[0]))
                 sha256 = f'`{get_sha256_hash(file_paths[0])}`'
 
