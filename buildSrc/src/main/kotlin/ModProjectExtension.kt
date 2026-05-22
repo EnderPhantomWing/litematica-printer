@@ -62,7 +62,7 @@ private fun getFullProjectVersion(modArchivesBaseName: String, modVersion: Strin
     val commitHash = System.getenv("COMMIT_HASH")
 
     return when {
-        isRelease -> "$modArchivesBaseName-v$modVersion-$commitHash"
+        isRelease -> "$modVersion-$commitHash"
         isCi -> {
             val time = SimpleDateFormat("yyMMdd")
                 .apply { timeZone = TimeZone.getTimeZone("GMT+08:00") }
@@ -71,9 +71,9 @@ private fun getFullProjectVersion(modArchivesBaseName: String, modVersion: Strin
             val buildNumber = System.getenv("GITHUB_RUN_NUMBER")
             val version = "v$modVersion"
             if (buildNumber != null) {
-                "$modArchivesBaseName-$version-$commitHash+$time+build.$buildNumber"
+                "$version-$commitHash+$time+build.$buildNumber"
             } else {
-                "$modArchivesBaseName-$version+$time"
+                "$version+$time"
             }
         }
         else -> {
@@ -81,7 +81,7 @@ private fun getFullProjectVersion(modArchivesBaseName: String, modVersion: Strin
                 .apply { timeZone = TimeZone.getTimeZone("GMT+08:00") }
                 .format(Date())
                 .toString()
-            "$modArchivesBaseName-v$modVersion+$time+build.local"
+            "$modVersion+$time+build.local"
         }
     }
 }

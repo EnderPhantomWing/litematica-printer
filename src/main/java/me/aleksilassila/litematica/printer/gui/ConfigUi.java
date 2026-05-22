@@ -15,6 +15,8 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screens.Screen;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 import java.util.function.BooleanSupplier;
@@ -62,19 +64,50 @@ public class ConfigUi extends GuiConfigsBase {
 
     @Override
     public List<ConfigOptionWrapper> getConfigs() {
-        ImmutableList.Builder<ConfigOptionWrapper> builder = ImmutableList.builder();
-        for (IConfigBase config : ConfigUi.tab.getConfigs()) {
-            if (config instanceof ConfigExtension extension) {
-                @Nullable BooleanSupplier visible = extension.litematica_printer$getVisible();
-                if (visible != null && visible.getAsBoolean()) {
-                    builder.add(new ConfigOptionWrapper(config));
-                }
-            }
+        List<? extends IConfigBase> configs;
+        Tab tab = ConfigUi.tab;
+
+        if (tab == Tab.ALL) {
+            return this.getAllConfigs();
+        } else if (tab == Tab.CORE) {
+            configs = Configs.Core.OPTIONS;
+        } else if (tab == Tab.PLACEMENT) {
+            configs = Configs.Placement.OPTIONS;
+        } else if (tab == Tab.BREAK) {
+            configs = Configs.Break.OPTIONS;
+        } else if (tab == Tab.PRINT) {
+            configs = Configs.Print.OPTIONS;
+        } else if (tab == Tab.EXCAVATE) {
+            configs = Configs.Mine.OPTIONS;
+        } else if (tab == Tab.FILL) {
+            configs = Configs.Fill.OPTIONS;
+        } else if (tab == Tab.FLUID) {
+            configs = Configs.Fluid.OPTIONS;
+        } else if (tab == Tab.HOTKEYS) {
+            configs = Configs.Hotkeys.OPTIONS;
+        } else {
+            return Collections.emptyList();
         }
-        return builder.build();
+        return ConfigOptionWrapper.createFor(configs);
+    }
+
+    public List<ConfigOptionWrapper> getAllConfigs() {
+        List<ConfigOptionWrapper> configs = new ArrayList<>();
+
+        configs.addAll(ConfigOptionWrapper.createFor(Configs.Core.OPTIONS));
+        configs.addAll(ConfigOptionWrapper.createFor(Configs.Placement.OPTIONS));
+        configs.addAll(ConfigOptionWrapper.createFor(Configs.Break.OPTIONS));
+        configs.addAll(ConfigOptionWrapper.createFor(Configs.Print.OPTIONS));
+        configs.addAll(ConfigOptionWrapper.createFor(Configs.Mine.OPTIONS));
+        configs.addAll(ConfigOptionWrapper.createFor(Configs.Fill.OPTIONS));
+        configs.addAll(ConfigOptionWrapper.createFor(Configs.Fluid.OPTIONS));
+        configs.addAll(ConfigOptionWrapper.createFor(Configs.Hotkeys.OPTIONS));
+
+        return configs;
     }
 
     public enum Tab {
+        ALL(I18n.of("category.all")),
         CORE(I18n.of("category.core")),
         PLACEMENT(I18n.of("category.placement")),
         BREAK(I18n.of("category.break")),
@@ -96,19 +129,6 @@ public class ConfigUi extends GuiConfigsBase {
 
         public String getComment() {
             return i18n.getConfigDesc().getString();
-        }
-
-        public ImmutableList<IConfigBase> getConfigs() {
-            return switch (this) {
-                case CORE -> Configs.Core.OPTIONS;
-                case PLACEMENT -> Configs.Placement.OPTIONS;
-                case BREAK -> Configs.Break.OPTIONS;
-                case PRINT -> Configs.Print.OPTIONS;
-                case EXCAVATE -> Configs.Mine.OPTIONS;
-                case FILL -> Configs.Fill.OPTIONS;
-                case FLUID -> Configs.Fluid.OPTIONS;
-                case HOTKEYS -> Configs.Hotkeys.OPTIONS;
-            };
         }
     }
 
