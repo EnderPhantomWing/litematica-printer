@@ -67,3 +67,31 @@ jobs:
         with:
           name: litematica-printer-single-${{ env.COMMIT_HASH }}
           path: fabricWrapper/build/tmp/submods/META-INF/jars/*.jar
+
+  summary:
+    runs-on: ubuntu-latest
+    if: ${{ !contains(github.event.head_commit.message, 'SKIP') }}
+    needs:
+      - build
+
+    steps:
+      - uses: actions/checkout@v6
+
+      - uses: actions/setup-python@v6
+        with:
+          python-version: 3.12
+
+      - name: Download build artifacts
+        uses: actions/download-artifact@v8
+        with:
+          name: |
+            litematica-printer-multi-${{ env.COMMIT_HASH }}
+            litematica-printer-single-${{ env.COMMIT_HASH }}
+          path: build-artifacts
+
+      - name: Make build summary
+        run: |
+          pip install jproperties
+          python .github/workflows/scripts/summary.py
+        env:
+          TARGET_SUBPROJECT: ${{ inputs.target_subproject }}
