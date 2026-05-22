@@ -101,6 +101,9 @@ jobs:
     steps:
       - uses: actions/checkout@v6
 
+      - name: Get latest short hash
+        run: echo "COMMIT_HASH=$(git rev-parse --short HEAD)" >> $GITHUB_ENV
+
       - uses: actions/setup-python@v6
         with:
           python-version: 3.12

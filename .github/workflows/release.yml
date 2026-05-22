@@ -121,6 +121,9 @@ jobs:
     steps:
       - uses: actions/checkout@v6
 
+      - name: Get latest short hash
+        run: echo "COMMIT_HASH=$(git rev-parse --short HEAD)" >> $GITHUB_ENV
+
       - name: Display context
         run: |
           echo ref_name = ${{ github.ref_name }}
