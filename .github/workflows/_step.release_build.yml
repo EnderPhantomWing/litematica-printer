@@ -11,7 +11,6 @@ on:
         type: string
         required: false
         default: ''
-  workflow_dispatch: 
 
 env:
   IS_THIS_RELEASE: true
@@ -68,20 +67,22 @@ jobs:
         run: |
           find fabricWrapper/build/libs/ -name "*-sources.jar" -exec rm {} \;
 
-      - name: Upload versionpack jar
+      - name: Upload multi version jar
         uses: actions/upload-artifact@v7
         with:
-          name: litematica-printer-${{ env.COMMIT_HASH }}
+          name: litematica-printer-multi-${{ env.COMMIT_HASH }}
           path: fabricWrapper/build/libs/*.jar
 
-      - name: Capture build artifacts single version
+      - name: Upload single version jar
         uses: actions/upload-artifact@v7
         with:
           name: litematica-printer-single-${{ env.COMMIT_HASH }}
           path: fabricWrapper/build/tmp/submods/META-INF/jars/*.jar
 
       - name: Release
-        uses: softprops/action-gh-release@v2
+        uses: softprops/action-gh-release@v3
         with:
-          files: fabricWrapper/build/libs/*
+          files: |
+            fabricWrapper/build/libs/*.jar
+            fabricWrapper/build/tmp/submods/META-INF/jars/*.jar
           token: ${{ secrets.GITHUB_TOKEN }}

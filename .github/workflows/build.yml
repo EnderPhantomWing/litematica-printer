@@ -1,9 +1,9 @@
-name: build
+name: Dev Builds
 on:
   push:
+    branches: [ '**' ]
     paths-ignore: ['*.md']
   pull_request:
-  workflow_dispatch:
 
 env:
   IS_THIS_RELEASE: false
@@ -56,28 +56,10 @@ jobs:
       - name: Build
         run: ./gradlew :fabricWrapper:build
 
-#      - name: Collect mod jars
-#        run: |
-#          shopt -s extglob
-#          mkdir mod-jars
-#          for jar in fabricWrapper/build/libs/!(*-@(dev|sources|shadow)).jar; do
-#              cp -p "$jar" mod-jars/
-#          done
-#          for jar in fabricWrapper/build/tmp/submods/META-INF/jars/!(*-@(dev|sources|shadow)).jar; do
-#              cp -p "$jar" mod-jars/
-#          done
-#          ls -l mod-jars
-#
-#      - name: Upload mod jars
-#        uses: actions/upload-artifact@v7
-#        with:
-#          name: test-${{ env.COMMIT_HASH }}
-#          path: mod-jars/*.jar
-
       - name: Capture build artifacts
         uses: actions/upload-artifact@v7
         with:
-          name: litematica-printer-${{ env.COMMIT_HASH }}
+          name: litematica-printer-multi-${{ env.COMMIT_HASH }}
           path: fabricWrapper/build/libs/*.jar
 
       - name: Capture build artifacts single version

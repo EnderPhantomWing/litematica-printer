@@ -1,4 +1,4 @@
-name: release
+name: Release
 
 # release: <default> (release title)
 # dispatch (all): Manual release for $target_release_tag
@@ -35,8 +35,8 @@ jobs:
         run: |
           cat <<EOF > $GITHUB_STEP_SUMMARY
           ## Action Parameters
-          - target_release_tag: \
-          \
+          - target_subproject: \`${{ github.event.inputs.target_subproject }}\`
+          - target_release_tag: \`${{ github.event.inputs.target_release_tag }}\`
           EOF
 
   changelog:
@@ -72,7 +72,7 @@ jobs:
         run: git-cliff --latest -o CHANGELOG.md
 
       - name: Upload changelog to release
-        uses: softprops/action-gh-release@v2
+        uses: softprops/action-gh-release@v3
         with:
           tag_name: ${{ steps.release_info_for_changelog.outputs.tag_name }}
           body_path: CHANGELOG.md
