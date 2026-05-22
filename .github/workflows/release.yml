@@ -121,9 +121,6 @@ jobs:
     steps:
       - uses: actions/checkout@v6
 
-      - name: Get latest short hash
-        run: echo "COMMIT_HASH=$(git rev-parse --short HEAD)" >> $GITHUB_ENV
-
       - name: Display context
         run: |
           echo ref_name = ${{ github.ref_name }}
@@ -133,9 +130,7 @@ jobs:
       - name: Download build artifacts
         uses: actions/download-artifact@v8
         with:
-          name: |
-            litematica-printer-multi-${{ env.COMMIT_HASH }}
-            litematica-printer-single-${{ env.COMMIT_HASH }}
+          name: build-artifacts
           path: build-artifacts
 
       - name: Get github release information

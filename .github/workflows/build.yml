@@ -56,6 +56,13 @@ jobs:
       - name: Build
         run: ./gradlew :fabricWrapper:build
 
+      - name: Capture build-artifacts to summary
+        uses: actions/upload-artifact@v7
+        with:
+          name: build-artifacts
+          path: |
+            fabricWrapper/build/libs/*.jar
+            fabricWrapper/build/tmp/submods/META-INF/jars/*.jar
 
       - name: Capture build artifacts
         uses: actions/upload-artifact@v7
@@ -77,9 +84,6 @@ jobs:
 
     steps:
       - uses: actions/checkout@v6
-
-      - name: Get latest short hash
-        run: echo "COMMIT_HASH=$(git rev-parse --short HEAD)" >> $GITHUB_ENV
 
       - uses: actions/setup-python@v6
         with:
