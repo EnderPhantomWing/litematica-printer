@@ -1,4 +1,4 @@
-package me.aleksilassila.litematica.printer.printer;
+package dev.bilixwhite.litematica.printer.printer;
 
 import dev.bilixwhite.litematica.printer.utils.BlockUtils;
 import net.minecraft.core.Direction;

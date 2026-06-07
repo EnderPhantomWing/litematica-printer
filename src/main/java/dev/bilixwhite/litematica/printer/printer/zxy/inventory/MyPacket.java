@@ -1,4 +1,4 @@
-package me.aleksilassila.litematica.printer.printer.zxy.inventory;
+package dev.bilixwhite.litematica.printer.printer.zxy.inventory;
 
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.level.block.Block;
