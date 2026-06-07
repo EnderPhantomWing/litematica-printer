@@ -1,6 +1,6 @@
 package me.aleksilassila.litematica.printer.mixin.openinv;
 
-import me.aleksilassila.litematica.printer.printer.zxy.inventory.OpenInventoryPacket;
+import dev.bilixwhite.litematica.printer.printer.zxy.inventory.OpenInventoryPacket;
 import net.minecraft.client.multiplayer.ClientPacketListener;
 import net.minecraft.network.protocol.game.ClientboundLoginPacket;
 import org.spongepowered.asm.mixin.Mixin;

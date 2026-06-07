@@ -3,7 +3,7 @@ package me.aleksilassila.litematica.printer.mixin.jackf;
 
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
-import me.aleksilassila.litematica.printer.printer.zxy.chesttracker.MemoryUtils;
+import dev.bilixwhite.litematica.printer.printer.zxy.chesttracker.MemoryUtils;
 import net.minecraft.client.gui.components.Button;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
@@ -15,7 +15,7 @@ import red.jackf.chesttracker.impl.gui.screen.EditMemoryBankScreen;
 import red.jackf.chesttracker.impl.gui.screen.MemoryBankView;
 import red.jackf.chesttracker.impl.memory.metadata.Metadata;
 
-import static me.aleksilassila.litematica.printer.printer.zxy.chesttracker.MemoryUtils.PRINTER_MEMORY;
+import static dev.bilixwhite.litematica.printer.printer.zxy.chesttracker.MemoryUtils.PRINTER_MEMORY;
 
 //同步打印机库存搜索距离等设置
 @Mixin(value = EditMemoryBankScreen.class, remap = false)

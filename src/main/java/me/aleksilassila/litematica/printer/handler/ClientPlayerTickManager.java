@@ -5,10 +5,9 @@ import lombok.Getter;
 import lombok.Setter;
 import me.aleksilassila.litematica.printer.config.Configs;
 import me.aleksilassila.litematica.printer.handler.handlers.*;
-import me.aleksilassila.litematica.printer.printer.ActionManager;
-import me.aleksilassila.litematica.printer.printer.zxy.inventory.InventoryUtils;
-import me.aleksilassila.litematica.printer.utils.BreakUtils;
-import me.aleksilassila.litematica.printer.utils.LitematicaUtils;
+import dev.bilixwhite.litematica.printer.printer.ActionManager;
+import dev.bilixwhite.litematica.printer.printer.zxy.inventory.InventoryUtils;
+import dev.bilixwhite.litematica.printer.utils.BreakUtils;
 import net.minecraft.client.Minecraft;
 
 public class ClientPlayerTickManager {

@@ -2,7 +2,7 @@ package me.aleksilassila.litematica.printer.mixin.printer.mc;
 
 import me.aleksilassila.litematica.printer.config.Configs;
 import me.aleksilassila.litematica.printer.handler.ClientPlayerTickManager;
-import me.aleksilassila.litematica.printer.utils.ConfigUtils;
+import dev.bilixwhite.litematica.printer.utils.ConfigUtils;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.network.Connection;
@@ -14,7 +14,7 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-import static me.aleksilassila.litematica.printer.printer.zxy.utils.ZxyUtils.exitGameReSet;
+import static dev.bilixwhite.litematica.printer.printer.zxy.utils.ZxyUtils.exitGameReSet;
 
 @Environment(EnvType.CLIENT)
 @Mixin(Connection.class)

@@ -1,8 +1,8 @@
 package me.aleksilassila.litematica.printer.mixin.jackf.fix;
 
-import me.aleksilassila.litematica.printer.printer.zxy.inventory.OpenInventoryPacket;
-import me.aleksilassila.litematica.printer.utils.ModUtils;
-import me.aleksilassila.litematica.printer.utils.PlayerUtils;
+import dev.bilixwhite.litematica.printer.printer.zxy.inventory.OpenInventoryPacket;
+import dev.bilixwhite.litematica.printer.utils.ModUtils;
+import dev.bilixwhite.litematica.printer.utils.PlayerUtils;
 import net.kyrptonaught.quickshulker.client.ClientUtil;
 import net.minecraft.world.item.ItemStack;
 import org.spongepowered.asm.mixin.Mixin;
@@ -11,7 +11,7 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 //#if MC >= 12001
-import me.aleksilassila.litematica.printer.printer.zxy.chesttracker.MemoryUtils;
+import dev.bilixwhite.litematica.printer.printer.zxy.chesttracker.MemoryUtils;
 //#endif
 
 @Mixin(value = ClientUtil.class, remap = false)

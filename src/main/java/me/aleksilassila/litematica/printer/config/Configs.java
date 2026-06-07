@@ -3,6 +3,7 @@ package me.aleksilassila.litematica.printer.config;
 import com.google.common.collect.ImmutableList;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
+import dev.bilixwhite.litematica.printer.enums.*;
 import fi.dy.masa.malilib.config.*;
 import fi.dy.masa.malilib.config.options.*;
 import fi.dy.masa.malilib.event.InputEventHandler;
@@ -12,8 +13,7 @@ import fi.dy.masa.malilib.hotkeys.KeybindSettings;
 import fi.dy.masa.malilib.util.restrictions.UsageRestriction;
 import fi.dy.masa.malilib.config.ConfigManager;
 import me.aleksilassila.litematica.printer.Reference;
-import me.aleksilassila.litematica.printer.enums.*;
-import me.aleksilassila.litematica.printer.utils.ModUtils;
+import dev.bilixwhite.litematica.printer.utils.ModUtils;
 import me.aleksilassila.litematica.printer.gui.ConfigUi;
 import net.minecraft.world.level.block.Blocks;
 

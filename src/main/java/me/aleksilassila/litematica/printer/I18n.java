@@ -1,7 +1,7 @@
 package me.aleksilassila.litematica.printer;
 
 import lombok.Getter;
-import me.aleksilassila.litematica.printer.utils.MessageUtils;
+import dev.bilixwhite.litematica.printer.utils.MessageUtils;
 import net.minecraft.network.chat.MutableComponent;
 import org.jetbrains.annotations.Nullable;
 

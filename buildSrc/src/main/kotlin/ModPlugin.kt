@@ -25,7 +25,7 @@ abstract class ModPlugin : Plugin<Project> {
         extensions.configure<JavaPluginExtension> {
             sourceCompatibility = javaVersion
             targetCompatibility = javaVersion
-            // withSourcesJar()
+            withSourcesJar()
         }
     }
 
@@ -59,6 +59,7 @@ abstract class ModPlugin : Plugin<Project> {
 
     private fun Project.configureResources() {
         tasks.withType<ProcessResources>().configureEach {
+            from("quickshulker.accesswidener")
             inputs.properties(placeholderProps)
             filesMatching(listOf("*.mixins.json", "*.mod.json", "META-INF/*mods.toml")) {
                 expand(placeholderProps)

@@ -9,30 +9,30 @@ import java.nio.file.Files
 import java.nio.file.StandardCopyOption
 
 /**
- * 通用文件下载工具
- * 特性：
- * 1. 支持任意 HTTP/HTTPS 链接
- * 2. 自定义输出目录（自动创建）
- * 3. 可选文件名（优先级：用户指定 > 服务器响应头 > 链接提取）
- * 4. 超时控制（连接10秒，读取30秒）
- * 5. 文件完整性校验（非空校验）
- * 6. 友好日志输出
+ * Universal file download tool
+ * Features:
+ * 1. Supports any HTTP/HTTPS link
+ * 2. Custom output directory (auto created)
+ * 3. Optional file name (priority: user specified > server response header > extracted from URL)
+ * 4. Timeout control (connect 10 seconds, read 30 seconds)
+ * 5. File integrity check (non-empty validation)
+ * 6. Friendly logging output
  */
 object ExternalModDownloader {
-    // 默认超时配置（毫秒）
+    // Default timeout configuration (milliseconds)
     private const val CONNECT_TIMEOUT = 10000
     private const val READ_TIMEOUT = 30000
 
-    // 默认 User-Agent（避免部分服务器拒绝）
+    // Default User-Agent (to avoid being rejected by some servers)
     private val USER_AGENT = "Gradle/${GradleVersion.current().version}"
 
     /**
-     * 下载文件
-     * @param project Gradle 项目实例（用于日志和路径处理）
-     * @param downloadUrl 下载链接（必填）
-     * @param outputDir 输出目录（必填，自动创建）
-     * @param fileName 自定义文件名（可选，为 null 时自动识别）
-     * @return 下载后的文件对象，失败返回 null
+     * Download a file
+     * @param project Gradle project instance (for logging and path handling)
+     * @param downloadUrl Download link (required)
+     * @param outputDir Output directory (required, auto created)
+     * @param fileName Custom file name (optional, auto-detected if null)
+     * @return Downloaded file object, or null if failed
      */
     fun download(
         project: Project,
@@ -41,100 +41,100 @@ object ExternalModDownloader {
         fileName: String? = null
     ): File? {
         val trimmedUrl = downloadUrl.trim()
-        require(trimmedUrl.isNotBlank()) { "下载链接不能为空！" }
-        require(outputDir.isDirectory || outputDir.mkdirs()) { "无法创建输出目录：${outputDir.absolutePath}" }
+        require(trimmedUrl.isNotBlank()) { "Download URL cannot be empty!" }
+        require(outputDir.isDirectory || outputDir.mkdirs()) { "Cannot create output directory: ${outputDir.absolutePath}" }
         println()
 
         return try {
-            // 2. 处理文件名（优先级：用户指定 > 响应头 > 链接提取）
+            // 2. Determine file name (priority: user specified > response header > extracted from URL)
             // val targetFileName = fileName ?: getFileNameFromResponse(connection) ?: extractFileNameFromUrl(trimmedUrl)
             val targetFileName = fileName ?: extractFileNameFromUrl(trimmedUrl)
-            ?: throw IOException("无法识别文件名，请手动指定 fileName 参数")
-            // 3. 构建目标文件
+            ?: throw IOException("Unable to identify file name, please manually specify the fileName parameter")
+            // 3. Build target file
             val targetFile = outputDir.resolve(targetFileName)
-            // 4. 检查文件是否已存在（避免重复下载）
+            // 4. Check if file already exists (avoid re-downloading)
             if (targetFile.exists() && targetFile.length() > 0) {
-                project.logger.log(LogLevel.LIFECYCLE, "文件已存在，跳过下载：${targetFile.absolutePath}")
+                project.logger.log(LogLevel.LIFECYCLE, "File already exists, skipping download: ${targetFile.absolutePath}")
                 return targetFile
             }
-            project.logger.log(LogLevel.LIFECYCLE, "开始下载：$trimmedUrl")
-            project.logger.log(LogLevel.LIFECYCLE, "输出目录：${outputDir.absolutePath}")
-            // 1. 建立连接，获取响应信息（用于提取文件名和校验）
+            project.logger.log(LogLevel.LIFECYCLE, "Starting download: $trimmedUrl")
+            project.logger.log(LogLevel.LIFECYCLE, "Output directory: ${outputDir.absolutePath}")
+            // 1. Establish connection and get response info (for file name extraction and validation)
             val connection = createConnection(trimmedUrl)
             connection.connect()
-            // 5. 执行下载
-            project.logger.log(LogLevel.LIFECYCLE, "正在下载：${targetFile.absolutePath}")
+            // 5. Perform download
+            project.logger.log(LogLevel.LIFECYCLE, "Downloading: ${targetFile.absolutePath}")
             downloadFile(connection, targetFile)
-            // 6. 校验文件完整性
+            // 6. Verify file integrity
             if (!targetFile.exists() || targetFile.length() == 0L) {
-                throw IOException("下载的文件为空或损坏")
+                throw IOException("Downloaded file is empty or corrupted")
             }
-            project.logger.log(LogLevel.LIFECYCLE, "下载成功：${targetFile.absolutePath}")
+            project.logger.log(LogLevel.LIFECYCLE, "Download successful: ${targetFile.absolutePath}")
             targetFile
 
         } catch (e: IllegalArgumentException) {
-            project.logger.log(LogLevel.ERROR, "下载参数错误：${e.message}")
+            project.logger.log(LogLevel.ERROR, "Download parameter error: ${e.message}")
             null
         } catch (e: IOException) {
-            project.logger.log(LogLevel.ERROR, "下载失败：${e.message}", e)
+            project.logger.log(LogLevel.ERROR, "Download failed: ${e.message}", e)
             null
         } catch (e: Exception) {
-            project.logger.log(LogLevel.ERROR, "未知错误：${e.message}", e)
+            project.logger.log(LogLevel.ERROR, "Unknown error: ${e.message}", e)
             null
         }
     }
 
     /**
-     * 创建 HTTP 连接并配置超时和请求头
+     * Create an HTTP connection and configure timeout and request headers
      */
     private fun createConnection(urlString: String): HttpURLConnection {
         val url = URI.create(urlString).toURL()
         val connection = url.openConnection() as HttpURLConnection
-        // 配置超时
+        // Configure timeouts
         connection.connectTimeout = CONNECT_TIMEOUT
         connection.readTimeout = READ_TIMEOUT
-        // 配置请求头
+        // Configure request headers
         connection.setRequestProperty("User-Agent", USER_AGENT)
         connection.setRequestProperty("Accept", "*/*")
-        connection.instanceFollowRedirects = true  // 自动跟随重定向
+        connection.instanceFollowRedirects = true  // Automatically follow redirects
         return connection
     }
 
     /**
-     * 从服务器响应头提取文件名
-     * 支持 Content-Disposition 响应头（如：attachment; filename="xxx.jar"）
+     * Extract file name from server response header
+     * Supports Content-Disposition header (e.g., attachment; filename="xxx.jar")
      */
     private fun getFileNameFromResponse(connection: HttpURLConnection): String? {
         return try {
             val disposition = connection.getHeaderField("Content-Disposition")
             if (disposition.isNullOrBlank()) return null
-            // 匹配 filename="xxx" 或 filename=xxx 格式
+            // Match format filename="xxx" or filename=xxx
             val filenamePattern = Regex("filename[\"=]?([^\";]+)")
             val matchResult = filenamePattern.find(disposition)
             matchResult?.groupValues?.get(1)?.trim()?.takeIf { it.contains('.') }
         } catch (e: Exception) {
-            null  // 提取失败时返回 null， fallback 到链接提取
+            null  // Return null if extraction fails, fallback to URL extraction
         }
     }
 
     /**
-     * 从 URL 提取文件名（处理带参数的链接）
-     * 示例：
+     * Extract file name from URL (handles links with parameters)
+     * Examples:
      * - https://xxx.com/mod.jar → mod.jar
      * - https://xxx.com/download?file=mod-1.0.jar → mod-1.0.jar
      * - https://xxx.com/mod.jar?v=123 → mod.jar
      */
     private fun extractFileNameFromUrl(urlString: String): String? {
         return try {
-            // 去掉 ? 和 # 后面的参数
+            // Remove content after ? and #
             val cleanUrl = urlString.split('?', '#').first()
-            // 提取最后一个 / 后的部分
+            // Extract the part after the last /
             val fileName = cleanUrl.substringAfterLast('/')
-            // 确保文件名有扩展名（至少3个字符，如 .jar、.zip）
+            // Ensure file name has an extension (at least 3 characters, e.g., .jar, .zip)
             if (fileName.contains('.') && fileName.substringAfterLast('.').length >= 2) {
                 fileName
             } else {
-                // 无有效扩展名时，默认用 .jar（针对模组场景）
+                // Default to .jar when no valid extension (for modding scenarios)
                 "downloaded-file-${System.currentTimeMillis()}.jar"
             }
         } catch (e: Exception) {
@@ -143,7 +143,7 @@ object ExternalModDownloader {
     }
 
     /**
-     * 实际写入文件
+     * Actually write the file
      */
     private fun downloadFile(connection: HttpURLConnection, targetFile: File) {
         connection.inputStream.use { inputStream ->
@@ -153,8 +153,8 @@ object ExternalModDownloader {
 }
 
 /**
- * Gradle 项目扩展函数（简化调用）
- * 示例：project.downloadFile("url", file("outputDir"), "custom.jar")
+ * Gradle project extension function (simplifies calls)
+ * Example: project.downloadFile("url", file("outputDir"), "custom.jar")
  */
 fun Project.downloadFile(
     downloadUrl: String,
@@ -165,8 +165,8 @@ fun Project.downloadFile(
 }
 
 /**
- * 重载扩展函数（支持字符串格式的输出目录路径）
- * 示例：project.downloadFile("url", "outputDir", "custom.jar")
+ * Overloaded extension function (supports output directory path as a string)
+ * Example: project.downloadFile("url", "outputDir", "custom.jar")
  */
 fun Project.downloadFile(
     downloadUrl: String,

@@ -1,7 +1,7 @@
 package me.aleksilassila.litematica.printer;
 
 import fi.dy.masa.malilib.event.InitializationHandler;
-import me.aleksilassila.litematica.printer.printer.zxy.inventory.OpenInventoryPacket;
+import dev.bilixwhite.litematica.printer.printer.zxy.inventory.OpenInventoryPacket;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.api.ModInitializer;
 

@@ -1,7 +1,7 @@
 package me.aleksilassila.litematica.printer.mixin.jackf;
 
 //#if MC >= 12001
-import me.aleksilassila.litematica.printer.printer.zxy.chesttracker.MemoryUtils;
+import dev.bilixwhite.litematica.printer.printer.zxy.chesttracker.MemoryUtils;
 import net.minecraft.world.item.ItemStack;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;

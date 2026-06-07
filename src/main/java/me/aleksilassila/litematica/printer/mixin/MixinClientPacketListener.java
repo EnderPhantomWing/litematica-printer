@@ -1,18 +1,18 @@
 package me.aleksilassila.litematica.printer.mixin;
 
-import me.aleksilassila.litematica.printer.printer.zxy.inventory.InventoryUtils;
-import me.aleksilassila.litematica.printer.printer.zxy.inventory.SwitchItem;
+import dev.bilixwhite.litematica.printer.printer.zxy.inventory.InventoryUtils;
+import dev.bilixwhite.litematica.printer.printer.zxy.inventory.SwitchItem;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientPacketListener;
 import net.minecraft.network.protocol.game.ClientboundContainerSetContentPacket;
-import me.aleksilassila.litematica.printer.printer.zxy.utils.ZxyUtils;
+import dev.bilixwhite.litematica.printer.printer.zxy.utils.ZxyUtils;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-import static me.aleksilassila.litematica.printer.printer.zxy.inventory.InventoryUtils.isOpenHandler;
-import static me.aleksilassila.litematica.printer.printer.zxy.inventory.SwitchItem.reSwitchItem;
+import static dev.bilixwhite.litematica.printer.printer.zxy.inventory.InventoryUtils.isOpenHandler;
+import static dev.bilixwhite.litematica.printer.printer.zxy.inventory.SwitchItem.reSwitchItem;
 
 @Mixin(ClientPacketListener.class)
 public abstract class MixinClientPacketListener {

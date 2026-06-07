@@ -1,7 +1,7 @@
 package me.aleksilassila.litematica.printer.mixin.openinv;
 
 //#if MC > 11904
-import me.aleksilassila.litematica.printer.printer.zxy.inventory.OpenInventoryPacket;
+import dev.bilixwhite.litematica.printer.printer.zxy.inventory.OpenInventoryPacket;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.Container;
 import net.minecraft.world.entity.player.Player;

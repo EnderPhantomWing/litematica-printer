@@ -8,7 +8,7 @@ import org.spongepowered.asm.mixin.injection.At;
 
 
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
-import me.aleksilassila.litematica.printer.printer.zxy.inventory.OpenInventoryPacket;
+import dev.bilixwhite.litematica.printer.printer.zxy.inventory.OpenInventoryPacket;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 
 

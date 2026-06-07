@@ -1,14 +1,15 @@
 package me.aleksilassila.litematica.printer;
 
+import dev.bilixwhite.litematica.printer.printer.zxy.chesttracker.MemoryUtils;
 import fi.dy.masa.malilib.interfaces.IInitializationHandler;
 import me.aleksilassila.litematica.printer.gui.ConfigUi;
-import me.aleksilassila.litematica.printer.utils.ModUtils;
+import dev.bilixwhite.litematica.printer.utils.ModUtils;
 import me.aleksilassila.litematica.printer.config.Configs;
-import me.aleksilassila.litematica.printer.enums.PrintModeType;
-import me.aleksilassila.litematica.printer.printer.ActionManager;
-import me.aleksilassila.litematica.printer.printer.zxy.utils.HighlightBlockRenderer;
-import me.aleksilassila.litematica.printer.utils.MessageUtils;
-import me.aleksilassila.litematica.printer.utils.bedrock.BedrockUtils;
+import dev.bilixwhite.litematica.printer.enums.PrintModeType;
+import dev.bilixwhite.litematica.printer.printer.ActionManager;
+import dev.bilixwhite.litematica.printer.printer.zxy.utils.HighlightBlockRenderer;
+import dev.bilixwhite.litematica.printer.utils.MessageUtils;
+import dev.bilixwhite.litematica.printer.utils.bedrock.BedrockUtils;
 
 import static me.aleksilassila.litematica.printer.config.Configs.*;
 
@@ -21,7 +22,7 @@ public class InitHandler implements IInitializationHandler {
         }
         //#if MC >= 12001
         if (ModUtils.isChestTrackerLoaded()) {
-            me.aleksilassila.litematica.printer.printer.zxy.chesttracker.MemoryUtils.setup();
+            MemoryUtils.setup();
         }
         //#endif
     }

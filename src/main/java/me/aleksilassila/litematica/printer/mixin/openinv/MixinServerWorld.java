@@ -1,7 +1,7 @@
 package me.aleksilassila.litematica.printer.mixin.openinv;
 
-import me.aleksilassila.litematica.printer.printer.zxy.inventory.OpenInventoryPacket;
-import me.aleksilassila.litematica.printer.printer.zxy.inventory.TickList;
+import dev.bilixwhite.litematica.printer.printer.zxy.inventory.OpenInventoryPacket;
+import dev.bilixwhite.litematica.printer.printer.zxy.inventory.TickList;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.level.ChunkPos;
@@ -11,8 +11,8 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-import static me.aleksilassila.litematica.printer.printer.zxy.inventory.OpenInventoryPacket.playerList;
-import static me.aleksilassila.litematica.printer.printer.zxy.inventory.OpenInventoryPacket.tickMap;
+import static dev.bilixwhite.litematica.printer.printer.zxy.inventory.OpenInventoryPacket.playerList;
+import static dev.bilixwhite.litematica.printer.printer.zxy.inventory.OpenInventoryPacket.tickMap;
 
 @Mixin(ServerLevel.class)
 public class MixinServerWorld {

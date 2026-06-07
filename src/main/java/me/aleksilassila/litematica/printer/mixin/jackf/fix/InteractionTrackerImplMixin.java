@@ -2,7 +2,7 @@ package me.aleksilassila.litematica.printer.mixin.jackf.fix;
 
 
 //#if MC > 11904
-import me.aleksilassila.litematica.printer.printer.zxy.inventory.InventoryUtils;
+import dev.bilixwhite.litematica.printer.printer.zxy.inventory.InventoryUtils;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;

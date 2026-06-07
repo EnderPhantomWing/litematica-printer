@@ -2,8 +2,8 @@ package me.aleksilassila.litematica.printer.mixin.openinv;
 
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
-import me.aleksilassila.litematica.printer.printer.zxy.inventory.OpenInventoryPacket;
-import me.aleksilassila.litematica.printer.printer.zxy.inventory.TickList;
+import dev.bilixwhite.litematica.printer.printer.zxy.inventory.OpenInventoryPacket;
+import dev.bilixwhite.litematica.printer.printer.zxy.inventory.TickList;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
@@ -17,8 +17,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
-import static me.aleksilassila.litematica.printer.printer.zxy.inventory.OpenInventoryPacket.playerList;
-import static me.aleksilassila.litematica.printer.printer.zxy.inventory.OpenInventoryPacket.tickMap;
+import static dev.bilixwhite.litematica.printer.printer.zxy.inventory.OpenInventoryPacket.playerList;
+import static dev.bilixwhite.litematica.printer.printer.zxy.inventory.OpenInventoryPacket.tickMap;
 
 @Mixin(ServerPlayer.class)
 public abstract class MixinServerPlayerEntity {

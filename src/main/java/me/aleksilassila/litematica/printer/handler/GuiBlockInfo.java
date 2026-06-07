@@ -1,7 +1,7 @@
 package me.aleksilassila.litematica.printer.handler;
 
 import fi.dy.masa.litematica.world.WorldSchematic;
-import me.aleksilassila.litematica.printer.printer.SchematicBlockContext;
+import dev.bilixwhite.litematica.printer.printer.SchematicBlockContext;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.core.BlockPos;
 import net.minecraft.resources.Identifier;

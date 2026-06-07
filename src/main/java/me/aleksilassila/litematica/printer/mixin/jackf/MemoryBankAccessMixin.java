@@ -9,7 +9,7 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 import red.jackf.chesttracker.impl.memory.MemoryBankAccessImpl;
 import red.jackf.chesttracker.impl.memory.MemoryBankImpl;
-import static me.aleksilassila.litematica.printer.printer.zxy.chesttracker.MemoryUtils.PRINTER_MEMORY;
+import static dev.bilixwhite.litematica.printer.printer.zxy.chesttracker.MemoryUtils.PRINTER_MEMORY;
 
 @Mixin(value = MemoryBankAccessImpl.class, remap = false)
 public abstract class MemoryBankAccessMixin{

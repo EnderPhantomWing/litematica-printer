@@ -2,16 +2,13 @@ import org.gradle.api.Project
 import org.gradle.api.GradleException
 import org.gradle.api.JavaVersion
 import java.io.File
-import java.text.SimpleDateFormat
-import java.util.Date
-import java.util.TimeZone
 
 fun Project.propOrNull(key: String) = findProperty(key)
-fun Project.prop(key: String) = propOrNull(key) ?: throw GradleException("buildSrc: 属性 $key 未配置/值为空")
+fun Project.prop(key: String) = propOrNull(key) ?: throw GradleException("buildSrc: Property $key is not configured or value is empty")
 
 fun Project.propStrOrNull(key: String): String? = propOrNull(key)?.toString()
 fun Project.propStr(key: String): String = propStrOrNull(key)
-    ?: throw GradleException("buildSrc: 属性 $key 未配置/值为空，或无法转换为字符串")
+    ?: throw GradleException("buildSrc: Property $key is not configured, value is empty, or cannot be converted to string")
 
 fun Project.downloadDependencyMod(downloadUrl: String, fileName: String? = null): File? {
     return rootProject.downloadFile(
@@ -35,7 +32,8 @@ val Project.modSources get() = propStrOrNull("mod_sources")
 
 val Project.mcDependency get() = propStrOrNull("minecraft_dependency")
 val Project.mcVersion get() = propStrOrNull("minecraft_version")
-val Project.mcVersionInt get() = propStrOrNull("mcVersion")?.toIntOrNull() ?: -1
+//val Project.mcVersionInt get() = propStrOrNull("mcVersion")?.toIntOrNull() ?: -1
+val Project.mcVersionInt get() = parseMcVersionToNumber(mcVersion ?: "")
 val Project.fabricLoaderVersion get() = propStrOrNull("loader_version")
 val Project.fabricApiVersion get() = propStrOrNull("fabric_version")
 
@@ -54,34 +52,33 @@ val Project.javaVersion
     }
 val Project.mixinJavaVersion get() = "JAVA_${javaVersion}"
 
-val Project.fullProjectVersion: String get() = getFullProjectVersion(modArchivesBaseName, modVersion)
+fun String.removeBuildSuffix(): String {
+    // 匹配三种模式并移除（从末尾匹配）
+    val regex = Regex("""-(?:[A-Za-z0-9]+-(?:release|\d+)|development)$""")
+    return this.replace(regex, "")
+}
 
-private fun getFullProjectVersion(modArchivesBaseName: String, modVersion: String): String {
-    val isRelease = System.getenv("IS_THIS_RELEASE")?.toBoolean() == true
-    val isCi = System.getenv("CI") == "true" || System.getenv("GITHUB_ACTIONS") == "true"
-    val commitHash = System.getenv("COMMIT_HASH")
+val Project.fullProjectMavenVersion: String get() = fullProjectVersion.removeBuildSuffix()
+val Project.fullProjectVersionName: String get() = "v$fullProjectVersion"
+val Project.fullProjectVersion: String get() = getFullProjectVersion(mcVersion, modVersion)
+
+private fun getFullProjectVersion(mcVersion: String?, modVersion: String): String {
+    val buildNumber     = System.getenv("GITHUB_RUN_NUMBER")
+    val commitHash      = System.getenv("COMMIT_HASH")
+    val isCi            = System.getenv("CI") == "true" || System.getenv("GITHUB_ACTIONS") == "true"
+    val isRelease       = System.getenv("IS_THIS_RELEASE")?.toBoolean() == true || System.getenv("BUILD_RELEASE")?.toBoolean() == true
 
     return when {
-        isRelease -> "$modVersion-$commitHash"
+        isRelease -> "$modVersion-mc$mcVersion-$commitHash-release"
         isCi -> {
-            val time = SimpleDateFormat("yyMMdd")
-                .apply { timeZone = TimeZone.getTimeZone("GMT+08:00") }
-                .format(Date())
-                .toString()
-            val buildNumber = System.getenv("GITHUB_RUN_NUMBER")
-            val version = "v$modVersion"
             if (buildNumber != null) {
-                "$version-$commitHash+$time+build.$buildNumber"
+                "$modVersion-mc$mcVersion-$commitHash-$buildNumber"
             } else {
-                "$version+$time"
+                "$modVersion-mc$mcVersion-development"
             }
         }
         else -> {
-            val time = SimpleDateFormat("yyMMdd")
-                .apply { timeZone = TimeZone.getTimeZone("GMT+08:00") }
-                .format(Date())
-                .toString()
-            "$modVersion+$time+build.local"
+            "$modVersion-mc$mcVersion-development"
         }
     }
 }
@@ -103,3 +100,4 @@ val Project.placeholderProps: Map<String, Any?>
         "malilib" to malilib,
         "litematica" to litematica
     ).filterValues { it != null }.mapValues { it.value!! }
+    

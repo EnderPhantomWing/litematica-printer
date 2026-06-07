@@ -5,17 +5,16 @@ import fi.dy.masa.litematica.world.SchematicWorldHandler;
 import fi.dy.masa.litematica.world.WorldSchematic;
 import me.aleksilassila.litematica.printer.config.Configs;
 import me.aleksilassila.litematica.printer.handler.ClientPlayerTickManager;
-import me.aleksilassila.litematica.printer.printer.BlockPosCooldownManager;
-import me.aleksilassila.litematica.printer.printer.zxy.inventory.InventoryUtils;
-import me.aleksilassila.litematica.printer.utils.BreakUtils;
-import me.aleksilassila.litematica.printer.utils.LitematicaUtils;
-import me.aleksilassila.litematica.printer.utils.ModUtils;
+import dev.bilixwhite.litematica.printer.printer.BlockPosCooldownManager;
+import dev.bilixwhite.litematica.printer.printer.zxy.inventory.InventoryUtils;
+import dev.bilixwhite.litematica.printer.utils.BreakUtils;
+import dev.bilixwhite.litematica.printer.utils.ModUtils;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.multiplayer.ClientPacketListener;
 import net.minecraft.client.player.AbstractClientPlayer;
 import net.minecraft.client.player.LocalPlayer;
-import me.aleksilassila.litematica.printer.printer.zxy.utils.ZxyUtils;
+import dev.bilixwhite.litematica.printer.printer.zxy.utils.ZxyUtils;
 import net.minecraft.network.protocol.game.ServerboundSignUpdatePacket;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.SignBlockEntity;
@@ -31,9 +30,8 @@ import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
 
 //#if MC >= 12001 
-import me.aleksilassila.litematica.printer.printer.zxy.chesttracker.MemoryUtils;
-import me.aleksilassila.litematica.printer.printer.zxy.inventory.OpenInventoryPacket;
-import me.aleksilassila.litematica.printer.utils.ModUtils;
+import dev.bilixwhite.litematica.printer.printer.zxy.chesttracker.MemoryUtils;
+import dev.bilixwhite.litematica.printer.printer.zxy.inventory.OpenInventoryPacket;
 //#endif
 
 @Mixin(LocalPlayer.class)

@@ -23,8 +23,8 @@ public class MixinInventoryUtils {
                 && (Configs.Core.CLOUD_INVENTORY.getBooleanValue()
                 || Configs.Placement.QUICK_SHULKER.getBooleanValue())
         ) {
-            me.aleksilassila.litematica.printer.printer.zxy.inventory.InventoryUtils.lastNeedItemList.add(stack.getItem());
-            me.aleksilassila.litematica.printer.printer.zxy.inventory.InventoryUtils.switchItem();
+            dev.bilixwhite.litematica.printer.printer.zxy.inventory.InventoryUtils.lastNeedItemList.add(stack.getItem());
+            dev.bilixwhite.litematica.printer.printer.zxy.inventory.InventoryUtils.switchItem();
         }
     }
 
